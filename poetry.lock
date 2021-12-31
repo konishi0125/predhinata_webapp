@@ -444,7 +444,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8, <3.11"
-content-hash = "bc1c50febdcf0b718d5800ea39d7ca2d07e5aee1e467b6c3a3d71d6abc16b56e"
+content-hash = "9af562b5989cb19fff5c53a02f2161c7beb2621ba9c31b5da37d7b7680d58526"
 
 [metadata.files]
 autoflake = [

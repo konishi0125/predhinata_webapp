@@ -13,7 +13,8 @@ Flask = "^2.0.2"
 opencv-python = "^4.5.5"
 python-dotenv = "^0.19.2"
 scikit-learn = "^1.0.2"
-cmake = {version = "^3.22.1", markers = "sys_platform == 'win32'"}
+dlib = "^19.22.1"
+cmake = "^3.22.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
