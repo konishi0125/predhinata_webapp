@@ -1,29 +1,16 @@
 # -*- coding: utf-8 -*-
-import csv
-import os
 import pickle
 import time
+from pathlib import Path
 
 import cv2
 import numpy as np
 from face_recognition import face_encodings, face_locations, load_image_file
-from flask import Flask, render_template, request
+from flask import render_template, request
 
-SAVE_DIR = "./tmp"
-if not os.path.isdir(SAVE_DIR):
-    os.mkdir(SAVE_DIR)
+from predhinata import BASEDIR, SAVE_DIR, init_app
 
-app = Flask(__name__, static_folder='tmp')
-
-csv_file = open("./member_list.csv", "r", encoding="utf-8")
-reader = csv.reader(csv_file, delimiter=",")
-name_list = []
-ja_name_list = []
-for row in reader:
-    name_list.append(row[1])
-    ja_name_list.append(row[2])
-name_list = name_list[1:]
-ja_name_list = ja_name_list[1:]
+app, ja_name_list = init_app()
 
 
 @app.route('/')
@@ -82,7 +69,8 @@ def pred():
             cnv_list = np.concatenate([cnv_list, cnv[0]])
     cnv_list = cnv_list.reshape((len(path_list), 128))
 
-    model = pickle.load(open('./model/SVC_hinata_model.sav', 'rb'))
+    model_path = Path(BASEDIR, 'model/SVC_hinata_model.sav')
+    model = pickle.load(model_path.open('rb'))
     # print(model.predict(cnv_list))
     result = model.predict_proba(cnv_list)
     m_list, per_list, n = get_ranking(result)
