@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "predhinata_webapp"
+version = "0.1.0"
+description = "predhinata web application"
+authors = ["KAWAI Shun <shun@osstech.co.jp>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+autopep8 = "^1.6.0"
+autoflake = "^1.4"
+isort = "^5.10.1"
+poethepoet = "^0.11.0"
+pre-commit = "^2.16.0"
+
+[tool.poe.tasks.lint]
+cmd = "flake8 predhinata/"
+
+[tool.poe.tasks.format]
+sequence = [
+  { cmd = "autopep8 -ir predhinata/" },
+  { cmd = "autoflake -ir --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports predhinata/" },
+  { cmd = "isort predhinata/" }
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
