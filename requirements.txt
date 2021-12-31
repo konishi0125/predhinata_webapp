@@ -1,0 +1,9 @@
+numpy==1.19.3
+cmake
+dlib
+face_recognition
+flask
+pandas
+scikit-learn==0.22.2.post1
+opencv-python
+gunicorn
