@@ -34,7 +34,7 @@ sequence = [
   { cmd = "isort predhinata/" }
 ]
 
-[tool.poe.tasks.run]
+[tool.poe.tasks.runserver]
 cmd = "gunicorn -c etc/gunicorn.conf.py predhinata.main:app"
 
 [build-system]

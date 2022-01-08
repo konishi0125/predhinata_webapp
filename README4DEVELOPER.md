@@ -8,7 +8,7 @@ $ poetry run pre-commit install
 # run server
 
 ```
-$ poetry run poe run
+$ poetry run poe runserver
 ```
 
 # run linter
