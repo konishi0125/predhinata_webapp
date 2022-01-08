@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <body>
-        <h1>日向坂メンバー顔診断</h1>
-        <h3>診断したい画像を選んでください。</h3>
-        <h3>複数枚選択できます。</h3>
-        <h3>5枚ほど画像があると正確に診断できます。</h3>
-        <p></p>
-        <form action="/result" method="post" enctype="multipart/form-data">
-            <input type="file" name="avatar" multiple>
-            <button type="submit">送信する</button>
-        </form>
-    </body>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/predhinata.css') }}">
+  </head>
+  <body>
+    <h1>日向坂メンバー顔診断</h1>
+    <h3>診断したい画像を選んでください。</h3>
+    <h3>複数枚選択できます。</h3>
+    <h3>5枚ほど画像があると正確に診断できます。</h3>
+    <p></p>
+    <form action="/result" method="post" enctype="multipart/form-data">
+      <input type="file" name="avatar" multiple>
+      <button type="submit">送信する</button>
+    </form>
+
+    <script type="application/javascript" src="{{ url_for('static', filename='js/shared.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='js/predhinata.js') }}"></script>
+  </body>
 </html>
