@@ -20,6 +20,9 @@ SAVE_DIR = Path(BASEDIR, SAVE_DIR_NAME)
 TEMPLATE_DIR_NAME = os.environ.get(f'{ENV_PREFIX}TEMPLATEDIR', 'templates')
 TEMPLATE_DIR = Path(BASEDIR, TEMPLATE_DIR_NAME)
 
+MODEL_DIR_NAME = os.environ.get(f'{ENV_PREFIX}MODELDIR', 'model')
+MODEL_DIR = Path(BASEDIR, MODEL_DIR_NAME)
+
 
 def init_app():
     from flask import Flask

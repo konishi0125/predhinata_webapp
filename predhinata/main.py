@@ -8,14 +8,14 @@ import numpy as np
 from face_recognition import face_encodings, face_locations, load_image_file
 from flask import render_template, request
 
-from predhinata import BASEDIR, SAVE_DIR, init_app
+from predhinata import MODEL_DIR, SAVE_DIR, init_app
 
 app, ja_name_list = init_app()
 
 
 @app.route('/')
 def index():
-    return render_template('./index.html')
+    return render_template('index.html')
 
 
 @app.route('/good')
@@ -37,7 +37,7 @@ def result():
             cv2.imwrite(save_path, img[top:bottom, left:right])
             img_path_list.append(t)
 
-    return render_template('./choose_img.html', img_path_list=img_path_list)
+    return render_template('choose_img.html', img_path_list=img_path_list)
 
 
 def get_ranking(similar_list, n=3):
@@ -69,7 +69,7 @@ def pred():
             cnv_list = np.concatenate([cnv_list, cnv[0]])
     cnv_list = cnv_list.reshape((len(path_list), 128))
 
-    model_path = Path(BASEDIR, 'model/SVC_hinata_model.sav')
+    model_path = Path(MODEL_DIR, 'SVC_hinata_model.sav')
     model = pickle.load(model_path.open('rb'))
     # print(model.predict(cnv_list))
     result = model.predict_proba(cnv_list)
@@ -78,7 +78,7 @@ def pred():
     context = {'m_list': m_list,
                'per_list': per_list,
                'n': n}
-    return render_template('./result.html', **context)
+    return render_template('result.html', **context)
 
 
 if __name__ == '__main__':
