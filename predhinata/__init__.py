@@ -14,14 +14,16 @@ ENV_PREFIX = 'PREDHINATA_WEBAPP_'
 CONFFILE_NAME = os.environ.get(f'{ENV_PREFIX}CONFFILE', 'etc/flask.conf.json')
 CONFFILE = Path(BASEDIR, CONFFILE_NAME)
 
-SAVE_DIR_NAME = os.environ.get(f'{ENV_PREFIX}SAVEDIR', 'tmp')
-SAVE_DIR = Path(BASEDIR, SAVE_DIR_NAME)
-
 TEMPLATE_DIR_NAME = os.environ.get(f'{ENV_PREFIX}TEMPLATEDIR', 'templates')
 TEMPLATE_DIR = Path(BASEDIR, TEMPLATE_DIR_NAME)
 
 STATIC_DIR_NAME = os.environ.get(f'{ENV_PREFIX}STATICDIR', 'static')
 STATIC_DIR = Path(BASEDIR, STATIC_DIR_NAME)
+
+SAVE_DIR_NAME = os.environ.get(f'{ENV_PREFIX}SAVEDIR', 'tmp')
+SAVE_DIR = Path(STATIC_DIR, SAVE_DIR_NAME)
+
+SAVE_DIR.mkdir(parents=True, exist_ok=True)
 
 MODEL_DIR_NAME = os.environ.get(f'{ENV_PREFIX}MODELDIR', 'model')
 MODEL_DIR = Path(BASEDIR, MODEL_DIR_NAME)
