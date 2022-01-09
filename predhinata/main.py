@@ -33,6 +33,10 @@ def result():
         return redirect(url_for('index'))
     elif request.method == 'POST':
         img_path_list = []
+        avatar_list = request.files.getlist("avatar")
+        if len(avatar_list) > 0:
+            if SAVE_DIR.exists() is False:
+                SAVE_DIR.mkdir(parent=True)
         for file in request.files.getlist("avatar"):
             img = file.stream
             img_array = np.asarray(bytearray(img.read()), dtype=np.uint8)
@@ -42,9 +46,10 @@ def result():
                 # https://qiita.com/lyrical_magical_girl/items/2bd432d6820ef446c947
                 t = datetime.now()
                 t_str = t.strftime('%Y/%m/%d %H:%M:%S %f')
-                filename = hashlib.sha256(t_str.encode()).hexdigest()
-                save_path = f'{SAVE_DIR}/{filename}.jpg'
+                filename = hashlib.sha256(t_str.encode()).hexdigest() + '.jpg'
+                save_path = f'{SAVE_DIR}/{filename}'
                 cv2.imwrite(save_path, img[top:bottom, left:right])
+                print(Path(SAVE_DIR_NAME, filename))
                 img_path_list.append(Path(SAVE_DIR_NAME, filename))
         return render_template('choose_img.html', img_path_list=img_path_list)
 
@@ -72,7 +77,7 @@ def pred():
     elif request.method == 'POST':
         path_list = request.form.getlist('img')
         for i in range(len(path_list)):
-            img = load_image_file(f'{STATIC_DIR}/{path_list[i]}.jpg')
+            img = load_image_file(f'{STATIC_DIR}/{path_list[i]}')
             known_face_locations = [(0, img.shape[1], img.shape[0], 0)]
             cnv = face_encodings(
                 img, known_face_locations=known_face_locations)

@@ -1,12 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>日向坂メンバー顔診断</h1>
-<h3>診断したい画像を選んでください。</h3>
-<h3>複数枚選択できます。</h3>
-<h3>5枚ほど画像があると正確に診断できます。</h3>
-<p></p>
-<form action="/result" method="post" enctype="multipart/form-data">
-  <input type="file" name="avatar" multiple>
-  <button type="submit">送信する</button>
-</form>
+<div class="row justify-content-center">
+  <div class="col-xl-8">
+    <div class="border border-primary rounded rounded-5 my-3 p-2">
+      <ul>
+	<li>診断したい画像を選んでください。</li>
+	<li>複数枚選択できます。</li>
+	<li>5枚ほど画像があると正確に診断できます。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-xl-8">
+    <form action="/result" method="post" enctype="multipart/form-data">
+      <div class="row align-items-center justify-content-center my-3">
+	<div class="col-auto">
+	  <label for="avatar" class="form-label form-label-lg my-0">診断したい画像を選択</label>
+	</div>
+	<div class="col-auto">
+	  <input type="file" name="avatar" id="avatar" class="form-control form-control-lg" multiple>
+	</div>
+      </div>
+      <div class="row justify-content-center my-3">
+	<div class="col-4">
+	  <button type="submit" class="btn btn-primary w-100">送信する</button>
+	</div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="preview">
+</div>
 {% endblock %}

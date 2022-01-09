@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <title>日向坂メンバー顔診断</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/predhinata.css') }}">
 </head>
 <body>
+  <div class="container-fluid px-0">
+    {% include "include/header.html" %}
   {% block content %}{% endblock content %}
+  </div>
   <script type="application/javascript" src="{{ url_for('static', filename='js/shared.js') }}"></script>
   <script type="application/javascript" src="{{ url_for('static', filename='js/predhinata.js') }}"></script>
 </body>

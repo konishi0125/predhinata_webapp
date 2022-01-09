@@ -1,6 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
-{% for i in range(n) %}
-  <p>{{i+1}}. メンバー:{{m_list[i]}} 似てる度:{{per_list[i]}}%</p>
-{% endfor %}
+<div class="row justify-content-center">
+  <div class="col-xl-8">
+    <p class="text-center h1 my-3">診断結果！！！</p>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-xl-8">
+    <table class="table table-primary table-striped border border-primary rounded rounded-3 my-4">
+      <thead>
+	<tr>
+	  <th scope="col">ランキング</th>
+	  <th scope="col">メンバー</th>
+	  <th scope="col">似てる度</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for i in range(n) %}
+	  <tr>
+	    <th scope="row">{{ i+1 }}</th>
+	    <th>{{ m_list[i] }}</th>
+	    <th>{{ per_list[i] }}%</th>
+	  </tr>
+	{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}
