@@ -9,6 +9,7 @@ module.exports = {
   mode: 'development',
   entry: {
     shared: ['bootstrap'],
+    favicon: ['./image/favicon.ico'],
     predhinata: {
       import: ['./js/index.js', './scss/index.scss'],
       dependOn: 'shared',
@@ -32,6 +33,13 @@ module.exports = {
           'css-loader',
           'sass-loader',
         ],
+      },
+      {
+        test: /\.ico$/,
+        type: 'asset/resource',
+        generator: {
+          filename: '../image/[name][ext]',
+        },
       },
     ],
   },

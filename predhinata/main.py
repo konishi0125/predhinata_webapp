@@ -7,7 +7,8 @@ from pathlib import Path
 import cv2
 import numpy as np
 from face_recognition import face_encodings, face_locations, load_image_file
-from flask import redirect, render_template, request, url_for
+from flask import (redirect, render_template, request, send_from_directory,
+                   url_for)
 
 from predhinata import MODEL_DIR, SAVE_DIR, SAVE_DIR_NAME, STATIC_DIR, init_app
 
@@ -19,9 +20,11 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/good')
-def good():
-    return 'aaa'
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(Path(STATIC_DIR, 'image'),
+                               'favicon.ico',
+                               mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/result', methods=["get", "post"])
