@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <body>
-    <h3>診断したい画像を選んでください。</h3>
-    <h3>複数枚選択できます。</h3>
-    <h3>同一人物を複数枚選択すると精度が上がります。</h3>
-    <form action="/pred" method='post'>
-        {% for path in img_path_list %}
-        <input type='checkbox' name='img' value='{{path}}'>
-        <img src="{{ url_for('static', filename=path) }}.jpg", width='100'>
-        <p></p>
-        {% endfor %}
-        <input type="submit" value="送信する">
-    </form>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block conten %}
+<h3>診断したい画像を選んでください。</h3>
+<h3>複数枚選択できます。</h3>
+<h3>同一人物を複数枚選択すると精度が上がります。</h3>
+<form action="/pred" method='post'>
+  {% for path in img_path_list %}
+    <input type='checkbox' name='img' value='{{path}}'>
+    <img src="{{ url_for('static', filename=path) }}.jpg", width='100'>
+    <p></p>
+  {% endfor %}
+  <input type="submit" value="送信する">
+</form>
+{% endblock %}

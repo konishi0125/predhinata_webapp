@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <title>temp title</title>
-    </head>
-    <body>
-        {% for i in range(n) %}
-        <p>{{i+1}}. メンバー:{{m_list[i]}} 似てる度:{{per_list[i]}}%</p>
-        {% endfor %}
-    </body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+{% for i in range(n) %}
+  <p>{{i+1}}. メンバー:{{m_list[i]}} 似てる度:{{per_list[i]}}%</p>
+{% endfor %}
+{% endblock %}

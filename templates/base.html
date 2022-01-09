@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/predhinata.css') }}">
+</head>
+<body>
+  {% block content %}{% endblock content %}
+  <script type="application/javascript" src="{{ url_for('static', filename='js/shared.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='js/predhinata.js') }}"></script>
+</body>
+</html>
