@@ -1,16 +1,34 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <body>
-    <h3>診断したい画像を選んでください。</h3>
-    <h3>複数枚選択できます。</h3>
-    <h3>同一人物を複数枚選択すると精度が上がります。</h3>
-    <form action="/pred" method='post'>
-        {% for path in img_path_list %}
-        <input type='checkbox' name='img' value='{{path}}'>
-        <img src="{{ url_for('static', filename=path) }}.jpg", width='100'>
-        <p></p>
-        {% endfor %}
-        <input type="submit" value="送信する">
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-xl-8">
+    <div class="border border-primary rounded rounded-5 my-3 p-2">
+      <ul>
+	<li>診断したい画像を選んでください。</li>
+	<li>複数枚選択できます。</li>
+	<li>5枚ほど画像があると正確に診断できます。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-xl-8">
+    <form action="/pred" method="post">
+      <div class="row justify-content-center my-2">
+      {% for path in img_path_list %}
+	<div class="col-3">
+	  <input class="form-check-input" id="img-{{ loop.index }}" type="checkbox" name="img" value="{{ path }}">
+	  <label class="form-check-label" for="img-{{ loop.index }}">
+	    <img class="img-thumbnai" src="{{ url_for('static', filename=path) }}" width='100'>
+	  </label>
+	</div>
+      {% endfor %}
+      <div class="row justify-content-center my-3">
+	<div class="col-4">
+	  <button type="submit" class="btn btn-primary w-100">送信する</button>
+	</div>
+      </div>
     </form>
-    </body>
-</html>
+  </div>
+</div>
+{% endblock %}
