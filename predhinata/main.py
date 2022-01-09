@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+import hashlib
 import pickle
-import time
+from datetime import datetime
 from pathlib import Path
 
 import cv2
@@ -8,7 +9,7 @@ import numpy as np
 from face_recognition import face_encodings, face_locations, load_image_file
 from flask import render_template, request
 
-from predhinata import MODEL_DIR, SAVE_DIR, init_app
+from predhinata import MODEL_DIR, SAVE_DIR, SAVE_DIR_NAME, STATIC_DIR, init_app
 
 app, ja_name_list = init_app()
 
@@ -25,19 +26,22 @@ def good():
 
 @app.route('/result', methods=["get", "post"])
 def result():
-    img_path_list = []
-    for file in request.files.getlist("avatar"):
-        img = file.stream
-        img_array = np.asarray(bytearray(img.read()), dtype=np.uint8)
-        img = cv2.imdecode(img_array, 1)
-        face = face_locations(img)
-        for top, right, bottom, left in face:
-            t = round(time.time()*10000)
-            save_path = f'{SAVE_DIR}/{t}.jpg'
-            cv2.imwrite(save_path, img[top:bottom, left:right])
-            img_path_list.append(t)
-
-    return render_template('choose_img.html', img_path_list=img_path_list)
+    if request.method == 'POST':
+        img_path_list = []
+        for file in request.files.getlist("avatar"):
+            img = file.stream
+            img_array = np.asarray(bytearray(img.read()), dtype=np.uint8)
+            img = cv2.imdecode(img_array, 1)
+            face = face_locations(img)
+            for top, right, bottom, left in face:
+                # https://qiita.com/lyrical_magical_girl/items/2bd432d6820ef446c947
+                t = datetime.now()
+                t_str = t.strftime('%Y/%m/%d %H:%M:%S %f')
+                filename = hashlib.sha256(t_str.encode()).hexdigest()
+                save_path = f'{SAVE_DIR}/{filename}.jpg'
+                cv2.imwrite(save_path, img[top:bottom, left:right])
+                img_path_list.append(Path(SAVE_DIR_NAME, filename))
+        return render_template('choose_img.html', img_path_list=img_path_list)
 
 
 def get_ranking(similar_list, n=3):
@@ -60,7 +64,7 @@ def get_ranking(similar_list, n=3):
 def pred():
     path_list = request.form.getlist('img')
     for i in range(len(path_list)):
-        img = load_image_file(f'{SAVE_DIR}/{path_list[i]}.jpg')
+        img = load_image_file(f'{STATIC_DIR}/{path_list[i]}.jpg')
         known_face_locations = [(0, img.shape[1], img.shape[0], 0)]
         cnv = face_encodings(img, known_face_locations=known_face_locations)
         if i == 0:

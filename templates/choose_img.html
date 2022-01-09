@@ -7,7 +7,7 @@
     <form action="/pred" method='post'>
         {% for path in img_path_list %}
         <input type='checkbox' name='img' value='{{path}}'>
-        <img src="tmp/{{path}}.jpg", width='100'>
+        <img src="{{ url_for('static', filename=path) }}.jpg", width='100'>
         <p></p>
         {% endfor %}
         <input type="submit" value="送信する">
