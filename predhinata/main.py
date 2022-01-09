@@ -7,7 +7,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 from face_recognition import face_encodings, face_locations, load_image_file
-from flask import render_template, request
+from flask import redirect, render_template, request, url_for
 
 from predhinata import MODEL_DIR, SAVE_DIR, SAVE_DIR_NAME, STATIC_DIR, init_app
 
@@ -26,7 +26,9 @@ def good():
 
 @app.route('/result', methods=["get", "post"])
 def result():
-    if request.method == 'POST':
+    if request.method == 'GET':
+        return redirect(url_for('index'))
+    elif request.method == 'POST':
         img_path_list = []
         for file in request.files.getlist("avatar"):
             img = file.stream
@@ -62,27 +64,31 @@ def get_ranking(similar_list, n=3):
 
 @app.route('/pred', methods=["get", "post"])
 def pred():
-    path_list = request.form.getlist('img')
-    for i in range(len(path_list)):
-        img = load_image_file(f'{STATIC_DIR}/{path_list[i]}.jpg')
-        known_face_locations = [(0, img.shape[1], img.shape[0], 0)]
-        cnv = face_encodings(img, known_face_locations=known_face_locations)
-        if i == 0:
-            cnv_list = cnv[0]
-        else:
-            cnv_list = np.concatenate([cnv_list, cnv[0]])
-    cnv_list = cnv_list.reshape((len(path_list), 128))
+    if request.method == 'GET':
+        return redirect(url_for('index'))
+    elif request.method == 'POST':
+        path_list = request.form.getlist('img')
+        for i in range(len(path_list)):
+            img = load_image_file(f'{STATIC_DIR}/{path_list[i]}.jpg')
+            known_face_locations = [(0, img.shape[1], img.shape[0], 0)]
+            cnv = face_encodings(
+                img, known_face_locations=known_face_locations)
+            if i == 0:
+                cnv_list = cnv[0]
+            else:
+                cnv_list = np.concatenate([cnv_list, cnv[0]])
+        cnv_list = cnv_list.reshape((len(path_list), 128))
 
-    model_path = Path(MODEL_DIR, 'SVC_hinata_model.sav')
-    model = pickle.load(model_path.open('rb'))
-    # print(model.predict(cnv_list))
-    result = model.predict_proba(cnv_list)
-    m_list, per_list, n = get_ranking(result)
-    # print(m_list, per_list)
-    context = {'m_list': m_list,
-               'per_list': per_list,
-               'n': n}
-    return render_template('result.html', **context)
+        model_path = Path(MODEL_DIR, 'SVC_hinata_model.sav')
+        model = pickle.load(model_path.open('rb'))
+        # print(model.predict(cnv_list))
+        result = model.predict_proba(cnv_list)
+        m_list, per_list, n = get_ranking(result)
+        # print(m_list, per_list)
+        context = {'m_list': m_list,
+                   'per_list': per_list,
+                   'n': n}
+        return render_template('result.html', **context)
 
 
 if __name__ == '__main__':
