@@ -77,7 +77,8 @@ def pred():
     elif request.method == 'POST':
         path_list = request.form.getlist('img')
         for i in range(len(path_list)):
-            img = load_image_file(f'{STATIC_DIR}/{path_list[i]}')
+            image_path = f'{STATIC_DIR}/{path_list[i]}'
+            img = load_image_file(image_path)
             known_face_locations = [(0, img.shape[1], img.shape[0], 0)]
             cnv = face_encodings(
                 img, known_face_locations=known_face_locations)
@@ -85,6 +86,11 @@ def pred():
                 cnv_list = cnv[0]
             else:
                 cnv_list = np.concatenate([cnv_list, cnv[0]])
+            try:
+                Path(image_path).unlink()
+            except OSError as error:
+                print(error)
+
         cnv_list = cnv_list.reshape((len(path_list), 128))
 
         model_path = Path(MODEL_DIR, 'SVC_hinata_model.sav')
