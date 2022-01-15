@@ -17,25 +17,33 @@ scikit-learn = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
-autopep8 = "^1.6.0"
 autoflake = "^1.4"
 isort = "^5.10.1"
 poethepoet = "^0.11.0"
 pre-commit = "^2.16.0"
 gunicorn = "^20.1.0"
+black = "^21.12b0"
+pyproject-flake8 = "^0.0.1-alpha.2"
 
 [tool.poe.tasks.lint]
-cmd = "flake8 predhinata/"
+cmd = "pflake8 predhinata/"
 
 [tool.poe.tasks.format]
 sequence = [
-  { cmd = "autopep8 -ir predhinata/" },
   { cmd = "autoflake -ir --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports predhinata/" },
-  { cmd = "isort predhinata/" }
+  { cmd = "isort predhinata/" },
+  { cmd = "black predhinata/" }
 ]
 
 [tool.poe.tasks.runserver]
 cmd = "gunicorn -c etc/gunicorn.conf.py predhinata.main:app"
+
+[tool.flake8]
+max-line-length = 88
+ignore = "E203,W503,W504"
+
+[tool.isort]
+profile = "black"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
